@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from .models import *
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 
 # candidates view
@@ -91,3 +92,48 @@ def job_detail(request, slug):
             relevant_jobs.append(i)
 
     return render(request, 'job_detail.html', {'job': job, 'profile': profile, 'apply_button': apply_button, 'save_button': save_button, 'relevant_jobs': relevant_jobs, 'candidate_navbar': 1})
+
+
+def saved_jobs(request):
+    jobs = SavedJobs.objects.filter(
+        user=request.user).order_by('-date_posted')
+    return render(request, 'saved_jobs.html', {'jobs': jobs, 'candidate_navbar': 1})
+
+
+def applied_jobs(request):
+    jobs = AppliedJobs.objects.filter(
+        user=request.user).order_by('-date_posted')
+    statuses = []
+    for job in jobs:
+        if Selected.objects.filter(job=job.job).filter(applicant=request.user).exists():
+            statuses.append(0)
+        elif Applicants.objects.filter(job=job.job).filter(applicant=request.user).exists():
+            statuses.append(1)
+        else:
+            statuses.append(2)
+    zipped = zip(jobs, statuses)
+    return render(request, 'applied_jobs.html', {'zipped': zipped, 'candidate_navbar': 1})
+
+
+def apply_job(request, slug):
+    user = request.user
+    job = get_object_or_404(Job, slug=slug)
+    applied, created = AppliedJobs.objects.get_or_create(job=job, user=user)
+    applicant, creation = Applicants.objects.get_or_create(
+        job=job, applicant=user)
+    return HttpResponseRedirect('/job/{}'.format(job.slug))
+
+
+def save_job(request, slug):
+    user = request.user
+    job = get_object_or_404(Job, slug=slug)
+    saved, created = SavedJobs.objects.get_or_create(job=job, user=user)
+    return HttpResponseRedirect('/job/{}'.format(job.slug))
+
+
+def remove_job(request, slug):
+    user = request.user
+    job = get_object_or_404(Job, slug=slug)
+    saved_job = SavedJobs.objects.filter(job=job, user=user).first()
+    saved_job.delete()
+    return HttpResponseRedirect('/job/{}'.format(job.slug))
