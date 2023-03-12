@@ -1,0 +1,165 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="h-100">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <title>Lyhnidas Your Job Coach</title>
+</head>
+
+<body class="d-flex flex-column h-100 main-bg">
+
+    <!-- Navigation -->
+    {% if not rec_navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><b>Lyhnidas Job Coach</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Job Search</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <span class="navbar-text text-muted">
+                    adventures of a software developer
+                </span>
+            </div>
+        </div>
+    </nav>
+    {% else %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><b>Lyhnidas Job Coach</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Add Job Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Manage Your Job Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Seach Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <span class="navbar-text text-muted">
+                    adventures of a software developer
+                </span>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container">{% block content %}{% endblock content %}</div>
+
+    <!-- Footer -->
+    <footer>
+        <hr my-2 />
+        <div class="row">
+            <div class="col-sm-6 col-md-4 footer-navigation">
+                <h3>Lyhnidas Job Coach</h3>
+                <p class="links">
+                    <a href="{% url 'home' %}">Job Seekers</a><strong> · </strong><a
+                        href="{% url 'home' %}">Recruiters</a>
+                </p>
+                <p class="company-name">
+                    Lyhnidas Job Coach @ 2023<br /><small class="text-muted">All rights reserved!</small><br />
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-4 footer-contacts">
+                <div>
+                    <span class="fa fa-map-marker footer-contacts-icon"></span>
+                    <p>Nuremberg, Germany</p>
+                </div>
+
+                <div>
+                    <i class="fa fa-envelope footer-contacts-icon"></i>
+                    <p><a href="#" target="_blank">networklyhnidas@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 footer-about">
+                <h4>About the company</h4>
+                <p>
+                    Lyhnidas Networks mission is to make hiring easier. We aim to save
+                    time for both job seekers and recruiters and to make the hiring
+                    process smoother. We continue to innovate and find new solutions to
+                    make hiring process simpler.
+                </p>
+                <div class="social-links social-icons">
+                    <a href="#" target="_blank"><i class="fa fa-facebook"></i></a><a href="#"><i
+                            class="fa fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/company/lyhnidas/" target="_blank"><i
+                            class="fa fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center" style="font-size: 12px">
+            <a href="https://www.freepik.com/vectors/">Image vectors by - www.lyhnidas.com</a>
+        </p>
+    </footer>
+
+    <!-- JS Files -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    {% block jsfiles %}{% endblock jsfiles %}
+</body>
+
+</html>
