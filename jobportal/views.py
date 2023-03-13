@@ -3,7 +3,9 @@ from django.views import generic
 from .models import *
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
-
+from .forms import ProfileUpdateForm, NewSkillForm
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 # candidates view
 
 
@@ -94,12 +96,14 @@ def job_detail(request, slug):
     return render(request, 'job_detail.html', {'job': job, 'profile': profile, 'apply_button': apply_button, 'save_button': save_button, 'relevant_jobs': relevant_jobs, 'candidate_navbar': 1})
 
 
+@login_required
 def saved_jobs(request):
     jobs = SavedJobs.objects.filter(
         user=request.user).order_by('-date_posted')
     return render(request, 'saved_jobs.html', {'jobs': jobs, 'candidate_navbar': 1})
 
 
+@login_required
 def applied_jobs(request):
     jobs = AppliedJobs.objects.filter(
         user=request.user).order_by('-date_posted')
@@ -115,6 +119,77 @@ def applied_jobs(request):
     return render(request, 'applied_jobs.html', {'zipped': zipped, 'candidate_navbar': 1})
 
 
+@login_required
+def my_profile(request):
+    you = request.user
+    profile = Profile.objects.filter(user=you).first()
+    user_skills = Skill.objects.filter(user=you)
+    if request.method == 'POST':
+        form = NewSkillForm(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.user = you
+            data.save()
+            return redirect('my-profile')
+    else:
+        form = NewSkillForm()
+    context = {
+        'u': you,
+        'profile': profile,
+        'skills': user_skills,
+        'form': form,
+        'profile_page': "active",
+    }
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def edit_profile(request):
+    you = request.user
+    profile = Profile.objects.filter(user=you).first()
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.user = you
+            data.save()
+            return redirect('my-profile')
+    else:
+        form = ProfileUpdateForm(instance=profile)
+    context = {
+        'form': form,
+    }
+    return render(request, 'edit_profile.html', context)
+
+
+@login_required
+def profile_view(request, slug):
+    p = Profile.objects.filter(slug=slug).first()
+    you = p.user
+    user_skills = Skill.objects.filter(user=you)
+    context = {
+        'u': you,
+        'profile': p,
+        'skills': user_skills,
+    }
+    return render(request, 'profile.html', context)
+
+
+def candidate_details(request):
+    return render(request, 'candidates_details.html')
+
+
+@login_required
+@csrf_exempt
+def delete_skill(request, pk=None):
+    if request.method == 'POST':
+        id_list = request.POST.getlist('choices')
+        for skill_id in id_list:
+            Skill.objects.get(id=skill_id).delete()
+        return redirect('my-profile')
+
+
+@login_required
 def apply_job(request, slug):
     user = request.user
     job = get_object_or_404(Job, slug=slug)
@@ -124,6 +199,7 @@ def apply_job(request, slug):
     return HttpResponseRedirect('/job/{}'.format(job.slug))
 
 
+@login_required
 def save_job(request, slug):
     user = request.user
     job = get_object_or_404(Job, slug=slug)
@@ -131,6 +207,7 @@ def save_job(request, slug):
     return HttpResponseRedirect('/job/{}'.format(job.slug))
 
 
+@login_required
 def remove_job(request, slug):
     user = request.user
     job = get_object_or_404(Job, slug=slug)
