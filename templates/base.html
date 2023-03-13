@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-   <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" />
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
@@ -20,107 +20,87 @@
     <title>Lyhnidas Your Job Coach</title>
 </head>
 
-<body class="d-flex flex-column h-100 main-bg">
-
-    <!-- Navigation -->
+<body>
     {% if not rec_navbar %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'detail-candidates' %}"><b>Lyhnidas Job Coach</b></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'job-search-list' %}">Job Search</a>
-                    </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{% url 'my-profile' %}">My Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="{% url 'detail-candidates' %}">
+            <b>Lyhnidas Job Coach</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link {{ home_page }}" href="{% url 'home' %}">Job Search</a>
+                <a class="nav-item nav-link {{ profile_page }}" href="{% url 'my-profile' %}">My Profile</a>
+                {% if user.is_authenticated %}
+                <a class="nav-item nav-link btn btn-danger ml-4 mr-4 text-light" href="{% url 'account_logout' %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url 'add-job' %}">Recruiters</a>
+                {% else %}
+                <a class="nav-item nav-link btn btn-success ml-4 mr-4 text-light" href="{% url 'account_login' %}">Login</a>
+                <a class="nav-item nav-link" href="{% url 'detail-recruiters' %}">Recruiters</a>
+                {% endif %}
             </div>
         </div>
     </nav>
     {% else %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}"><b>Lyhnidas Job Coach</b></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Add Job Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Manage Your Job Posts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Seach Candidates</a>
-                    </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="{% url 'detail-recruiters' %}">
+            <b>Lyhnidas Job Coach Recruiter </b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link {{ rec_home_page }}" href="{% url 'detail-recruiters' %}">Home</a>
+                <a class="nav-item nav-link {{ add_job_page }}" href="{% url 'add-job' %}">Add Job Post</a>
+                <a class="nav-item nav-link {{ manage_jobs_page }}" href="{% url 'job-list' %}">Manage Your Job
+                    Posts</a>
+                {% if user.is_authenticated %}
+                <a class="nav-item nav-link btn btn-danger ml-4 mr-4 text-light" href="{% url 'account_logout' %}">Logout</a>
+                {% else %}
+
+                <a class="nav-item nav-link btn btn-success ml-4 mr-4 text-light" href="{% url 'account_login' %}">Login</a>
+                {% endif %}
+                <a class="nav-item nav-link" href="{% url 'home' %}">Job Seekers/Candidates</a>
             </div>
         </div>
     </nav>
     {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" id="msg" role="alert">
+                    {{ message | safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <main class="container">{% block content %}{% endblock content %}</main>
 
-    <main class="container">{% block content %}{% endblock content %}
-
-    </main>
-
-    <!-- Footer -->
     <footer>
         <hr my-2 />
         <div class="row">
             <div class="col-sm-6 col-md-4 footer-navigation">
                 <h3>Lyhnidas Job Coach</h3>
                 <p class="links">
-                    <a href="{% url 'home' %}">Job Seekers</a><strong> · </strong><a
-                        href="{% url 'home' %}">Recruiters</a>
+                    <a href="{% url 'detail-candidates' %}">Job Seekers</a><strong> · </strong><a
+                        href="{% url 'detail-recruiters' %}">Recruiters</a><strong> · </strong>
                 </p>
                 <p class="company-name">
-                    &copy;Lyhnidas Job Coach 2023<br /><small class="text-muted">All rights reserved!</small><br />
+                    lyhnidas 2023<br /><small class="text-muted">All rights reserved!</small><br />
                 </p>
             </div>
             <div class="col-sm-6 col-md-4 footer-contacts">
                 <div>
                     <span class="fa fa-map-marker footer-contacts-icon"></span>
-                    <p>Nuremberg, Germany</p>
+                    <p><span class="new-line-span">Lyhnidas</span>Nuernberg, Germany</p>
                 </div>
 
                 <div>
@@ -138,16 +118,21 @@
                     make hiring process simpler.
                 </p>
                 <div class="social-links social-icons">
-                    <a href="#" target="_blank"><i class="fa fa-facebook"></i></a><a href="#"><i
-                            class="fa fa-twitter"></i></a>
-                    <a href="https://www.linkedin.com/company/lyhnidas/" target="_blank"><i
-                            class="fa fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a
+                        href="https://www.linkedin.com/company/lyhnidas/" target="_blank"><i class="fa fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- JS Files -->
+    <script>
+        setTimeout(function () {
+            let messages = document.getElementById('msg');
+            let alert = new bootstrap.Alert(messages);
+            alert.close();
+        }, 2000);
+    </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

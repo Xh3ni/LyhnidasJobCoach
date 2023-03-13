@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import Job, Applicants, Selected, Profile, Skill, AppliedJobs, SavedJobs
+from .models import Job, Applicants, Selected, Profile, Skill, SavedJobs, AppliedJobs
 from django_summernote.admin import SummernoteModelAdmin
 
 
 @admin.register(Job)
 class JobAdmin(SummernoteModelAdmin):
 
-    list_display = ('title', 'slug', 'status', 'date_posted')
+    list_display = ('title', 'slug', 'date_posted')
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ('status', 'date_posted')
+    list_filter = ('title', 'date_posted')
     summernote_fields = ('description')
 
 

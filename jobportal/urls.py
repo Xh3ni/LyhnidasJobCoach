@@ -15,4 +15,19 @@ urlpatterns = [
     path('saved_job_list/', views.saved_jobs, name='saved-jobs'),
     path('applied_job_list/', views.applied_jobs, name='applied-jobs'),
     path('job/<slug>/remove/', views.remove_job, name='remove-job'),
+
+    # recruiters
+
+    path('hiring/', views.rec_details, name='detail-recruiters'),
+    path('job/add/', views.add_job, name='add-job'),
+    path('job/<slug>/edit/', views.edit_job, name='edit-job-post'),
+    path('job/<slug>', views.job_detail, name='add-job-detail'),
+    path('jobs/', views.all_jobs, name='job-list'),
+    path('candidate/search/', views.search_candidates,  name='search-candidates'),
+    path('job/<slug>/applicants', views.applicant_list, name='applicant-list'),
+    path('job/<slug>/selected', views.selected_list, name='selected-list'),
+    path('job/<job_id>/select-applicant/<can_id>/',
+         views.select_applicant, name='select-applicant'),
+    path('job/<job_id>>/remove-applicant/<can_id>/',
+         views.remove_applicant, name='remove-applicant'),
 ]
